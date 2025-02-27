@@ -1,5 +1,5 @@
-﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-    xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
+﻿<bg
+>
     <vertical vertical-fit="PreferredSize">
         <text text="Color Scheme List" align="Center" font-size="4.5"/>
         <bool-setting text="Enabled" value="enabled" apply-on-change="true"/>

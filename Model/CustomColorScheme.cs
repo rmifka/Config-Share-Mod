@@ -34,4 +34,11 @@ public class CustomColorScheme
             environmentColor1Boost
         };
     }
+
+    public ColorScheme ToColorScheme()
+    {
+        return new ColorScheme("ConfigShare", "ConfigShare", true, "ConfigShare", false,
+            saberAColor, saberBColor, environmentColor0, environmentColor1, true,
+            environmentColor0Boost, environmentColor1Boost, obstaclesColor);
+    }
 }

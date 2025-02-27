@@ -3,9 +3,9 @@ using Config_Share.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class MainBehaviour : MonoBehaviour
+public class ColorFetcher : MonoBehaviour
 {
-    public static MainBehaviour Instance { get; private set; }
+    public static ColorFetcher Instance { get; private set; }
 
     private void Start()
     {
@@ -26,11 +26,11 @@ public class MainBehaviour : MonoBehaviour
             Plugin.Logger.Info("Received color schemes.");
             if (json != null)
             {
-                var a = JsonConvert.DeserializeObject<ColorWebResponse>(json);
+                var colorWebResponse = JsonConvert.DeserializeObject<ColorWebResponse>(json);
 
                 Manager.Instance.CustomColorSchemes.Clear();
 
-                foreach (var colorScheme in a.items)
+                foreach (var colorScheme in colorWebResponse.items)
                 {
                     if (string.IsNullOrEmpty(PluginConfig.Instance.SelectedColorSchemeId))
                     {

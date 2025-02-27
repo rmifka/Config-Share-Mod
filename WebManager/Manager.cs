@@ -1,15 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Config_Share;
 using Config_Share.Configuration;
-using UnityEngine;
 using UnityEngine.Networking;
 
 public class Manager
 {
-    private static string _baseUrl = "https://config-share.lambourne.at/api/";
-    private static string _colorSchemesEndpoint = "colors";
+    private static readonly string _baseUrl = "https://config-share.lambourne.at/api/";
+    private static readonly string _colorSchemesEndpoint = "colors";
+
+    private Manager()
+    {
+        Instance = this;
+    }
+
     public static Manager Instance { get; private set; } = new Manager();
 
     public Dictionary<string, CustomColorScheme> CustomColorSchemes { get; } =
@@ -29,17 +35,12 @@ public class Manager
         PluginConfig.Instance.SelectedColorSchemeId = colorScheme.colorSchemeId;
     }
 
-    private Manager()
-    {
-        Instance = this;
-    }
-
     public void AddColorScheme(CustomColorScheme colorScheme)
     {
         CustomColorSchemes.Add(colorScheme.colorSchemeId, colorScheme);
     }
 
-    public IEnumerator RequestAllColorSchemes(System.Action<string> callback)
+    public IEnumerator RequestAllColorSchemes(Action<string> callback)
     {
         var url = _baseUrl + _colorSchemesEndpoint;
 

@@ -5,6 +5,7 @@ using IPA.Config.Stores;
 
 namespace Config_Share.Configuration
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     internal class PluginConfig
     {
         public static PluginConfig Instance { get; set; }
@@ -12,7 +13,7 @@ namespace Config_Share.Configuration
         public virtual string SelectedColorSchemeId { get; set; } = "";
 
         /// <summary>
-        /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).
+        ///     This is called whenever BSIPA reads the config from disk (including when file changes are detected).
         /// </summary>
         public virtual void OnReload()
         {
@@ -20,7 +21,8 @@ namespace Config_Share.Configuration
         }
 
         /// <summary>
-        /// Call this to force BSIPA to update the config file. This is also called by BSIPA if it detects the file was modified.
+        ///     Call this to force BSIPA to update the config file. This is also called by BSIPA if it detects the file was
+        ///     modified.
         /// </summary>
         public virtual void Changed()
         {
@@ -28,7 +30,7 @@ namespace Config_Share.Configuration
         }
 
         /// <summary>
-        /// Call this to have BSIPA copy the values from <paramref name="other"/> into this config.
+        ///     Call this to have BSIPA copy the values from <paramref name="other" /> into this config.
         /// </summary>
         public virtual void CopyFrom(PluginConfig other)
         {

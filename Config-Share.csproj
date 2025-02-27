@@ -161,7 +161,7 @@
     <ItemGroup>
         <Compile Include="HarmonyPatches\ColorForTypePatch.cs"/>
         <Compile Include="Model\CustomColorScheme.cs"/>
-        <Compile Include="MonoBehaviours\MainBehaviour.cs"/>
+        <Compile Include="MonoBehaviours\ColorFetcher.cs" />
         <Compile Include="Plugin.cs"/>
         <Compile Include="Configuration\PluginConfig.cs"/>
         <Compile Include="Config_ShareController.cs"/>
@@ -190,7 +190,7 @@
         <EmbeddedResource Include="Resources\circle.png"/>
     </ItemGroup>
     <ItemGroup>
-      <Content Include=".gitignore" />
+        <Content Include=".gitignore"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>

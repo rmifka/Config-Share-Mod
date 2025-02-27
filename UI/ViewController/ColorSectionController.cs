@@ -13,26 +13,32 @@ using UnityEngine;
 [HotReload(RelativePathToLayout = @"..\Views\ColorSelection.bsml")]
 internal class ColorSectionController : BSMLAutomaticViewController
 {
-    [UIAction("on-scheme-selected")]
-    private void OnSchemeSelected(TableView tb, object row)
-    {
-        var selected = row as ColorListItem;
-        Manager.Instance.SetCurrentScheme(selected?.index);
-        Plugin.Logger.Info($"Selected color scheme: {selected?.index}");
-        tb.ReloadDataKeepingPosition();
-        selected.schemeText.color = Color.green;
-    }
+    [UIComponent("list")] public CustomCellListTableData presetListDisplay;
 
-    [UIValue("scheme-list")] private List<object> SchemeList => new List<object>();
+    // ReSharper disable once UnusedMember.Local
+    [UIValue("scheme-list")] private List<object> SchemeList => new List<object>(); // Empty List
 
     [UIValue("enabled")]
+    // ReSharper disable once UnusedMember.Local
     private bool Enabled
     {
         get => PluginConfig.Instance.Enabled;
         set => PluginConfig.Instance.Enabled = value;
     }
 
-    [UIComponent("list")] public CustomCellListTableData presetListDisplay;
+    [UIAction("on-scheme-selected")]
+    // ReSharper disable once UnusedMember.Local
+    private void OnSchemeSelected(TableView tb, object row)
+    {
+        var selected = row as ColorListItem;
+        Manager.Instance.SetCurrentScheme(selected?.index);
+        Plugin.Logger.Info($"Selected color scheme: {selected?.index}");
+        tb.ReloadDataKeepingPosition();
+        if (selected != null)
+        {
+            selected.schemeText.color = Color.green;
+        }
+    }
 
 
     [UIAction("#post-parse")]
@@ -43,7 +49,7 @@ internal class ColorSectionController : BSMLAutomaticViewController
 
     private void SetColorList()
     {
-        List<ColorListItem> colorList = new List<ColorListItem>();
+        var colorList = new List<ColorListItem>();
         colorList.AddRange(
             Manager.Instance.CustomColorSchemes
                 .Select(x =>
@@ -55,25 +61,26 @@ internal class ColorSectionController : BSMLAutomaticViewController
 
 internal class ColorListItem
 {
-    public string index;
+    private readonly IEnumerable<Color> colors;
 
     [UIValue("scheme-name")] public readonly string colorSchemeName;
-
-    [UIComponent("saberAColor")] public ImageView saberAColor;
-    [UIComponent("saberBColor")] public ImageView saberBColor;
-    [UIComponent("obstacleColor")] public ImageView obstacleColor;
-    [UIComponent("environment0Color")] public ImageView environment0Color;
-    [UIComponent("environment1Color")] public ImageView environment1Color;
+    [UIComponent("obstacleColor")] private readonly ImageView obstacleColor = null;
+    [UIComponent("environment0Color")] private readonly ImageView environment0Color = null;
 
     [UIComponent("environment0ColorBoost")]
-    public ImageView environment0ColorBoost;
+    private readonly ImageView environment0ColorBoost = null;
+
+    [UIComponent("environment1Color")] private readonly ImageView environment1Color = null;
 
     [UIComponent("environment1ColorBoost")]
-    public ImageView environment1ColorBoost;
+    private readonly ImageView environment1ColorBoost = null;
 
-    [UIComponent("scheme-text")] public TextMeshProUGUI schemeText;
+    public string index;
 
-    private readonly IEnumerable<Color> colors;
+    [UIComponent("saberAColor")] private readonly ImageView saberAColor = null;
+    [UIComponent("saberBColor")] private readonly ImageView saberBColor = null;
+
+    [UIComponent("scheme-text")] public readonly TextMeshProUGUI schemeText = null;
 
     public ColorListItem(string index, string colorSchemeName, IEnumerable<Color> colors)
     {
@@ -95,10 +102,7 @@ internal class ColorListItem
         environment0ColorBoost.color = colorList[5];
         environment1ColorBoost.color = colorList[6];
 
-        if (index == Manager.Instance.CurrentScheme.colorSchemeId)
-        {
-            schemeText.color = Color.green;
-        }
+        if (index == Manager.Instance.CurrentScheme.colorSchemeId) schemeText.color = Color.green;
     }
 
     private void DeSelect()
