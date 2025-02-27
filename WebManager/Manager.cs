@@ -48,7 +48,8 @@ public class Manager
         {
             yield return request.SendWebRequest();
 
-            if (request.isNetworkError || request.isHttpError)
+            if (request.result == UnityWebRequest.Result.ConnectionError ||
+                request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Plugin.Logger.Error(request.error);
                 callback?.Invoke(null);

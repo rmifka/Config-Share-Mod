@@ -51,8 +51,10 @@
             <SpecificVersion>False</SpecificVersion>
         </Reference>
         <Reference Include="BSML">
-            <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
-            <Private>false</Private>
+          <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
+        </Reference>
+        <Reference Include="BeatSaber.ViewSystem">
+            <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatSaber.ViewSystem.dll</HintPath>
         </Reference>
         <Reference Include="Colors">
             <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Colors.dll</HintPath>
@@ -113,10 +115,6 @@
             <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
             <Private>false</Private>
         </Reference>
-        <Reference Include="UnityEngine.TextCoreModule">
-            <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.TextCoreModule.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
             <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
             <Private>false</Private>
@@ -159,7 +157,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="HarmonyPatches\ColorForTypePatch.cs"/>
+        <Compile Include="HarmonyPatches\SceneSetupPatch.cs" />
         <Compile Include="Model\CustomColorScheme.cs"/>
         <Compile Include="MonoBehaviours\ColorFetcher.cs" />
         <Compile Include="Plugin.cs"/>

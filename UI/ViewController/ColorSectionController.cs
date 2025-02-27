@@ -54,8 +54,8 @@ internal class ColorSectionController : BSMLAutomaticViewController
             Manager.Instance.CustomColorSchemes
                 .Select(x =>
                     new ColorListItem(x.Value.colorSchemeId, x.Value.colorSchemeName, x.Value.GetColors())));
-        presetListDisplay.data = colorList.Cast<object>().ToList();
-        presetListDisplay.tableView.ReloadData();
+        presetListDisplay.Data = colorList.Cast<object>().ToList();
+        presetListDisplay.TableView.ReloadData();
     }
 }
 

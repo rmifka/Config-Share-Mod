@@ -1,5 +1,6 @@
 ﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
+using BeatSaberMarkupLanguage.Util;
 using HMUI;
 using Plugin = Config_Share.Plugin;
 
@@ -48,12 +49,13 @@ public class ColorSectionFlowCoordinator : FlowCoordinator
                     flow.ShowFlow();
                 });
 
-        PersistentSingleton<MenuButtons>.instance.RegisterButton(button);
+        MenuButtons.Instance.RegisterButton(button);
         Plugin.Logger.Info("Initialized Flow Coordinator");
     }
 
     public static void Deinit()
     {
-        if (button != null) PersistentSingleton<MenuButtons>.instance.UnregisterButton(button);
+        if (button != null) MenuButtons.Instance.UnregisterButton(button);
+        ;
     }
 }

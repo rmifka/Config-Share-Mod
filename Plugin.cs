@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
+using BeatSaberMarkupLanguage.Util;
 using Config_Share.Configuration;
 using HarmonyLib;
 using IPA;
@@ -38,11 +40,12 @@ namespace Config_Share
 
         [OnStart]
         // Resharper disable once UnusedMember.Global
-        public void OnApplicationStart()
+        public async Task OnApplicationStart()
         {
             Logger.Debug("OnApplicationStart");
             new GameObject("Config_ShareController").AddComponent<Config_ShareController>();
             new GameObject("ConfigShareMainBehaviour").AddComponent<ColorFetcher>();
+            await MainMenuAwaiter.WaitForMainMenuAsync();
             BSMLWrapper.EnableUI();
             _harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
