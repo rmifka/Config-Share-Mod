@@ -1,0 +1,33 @@
+﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
+    <vertical vertical-fit="PreferredSize">
+        <text text="Color Scheme List" align="Center" font-size="4.5"/>
+        <bool-setting text="Enabled" value="enabled" apply-on-change="true"/>
+        <custom-list id="list" contents="scheme-list" visible-cells="7" expand-cell="true" pref-width="150"
+                     show-scrollbar="true" select-cell="on-scheme-selected" cell-size="10">
+
+            <bg bg="round-rect-panel" pref-width="150" pref-height="10">
+                <horizontal vertical-fit='Unconstrained' horizontal-fit='Unconstrained' align="Center">
+                    <text id="scheme-text" text="~scheme-name" font-size="4.2" align="Center"/>
+                    <horizontal horizontal-fit="PreferredSize" pref-width="40" align="right">
+                        <image src="#FullCircle64" id="saberAColor" pref-width="4.2" pref-height="4.2"
+                               preserve-aspect="true"/>
+                        <image src="#FullCircle64" id="saberBColor" pref-width="4.2" pref-height="4.2"
+                               preserve-aspect="true"/>
+                        <image src="#FullCircle64" id="obstacleColor" pref-width="4.2" pref-height="4.2"
+                               preserve-aspect="true"/>
+                        <image src="#FullCircle64" id="environment0Color" pref-width="4.2" pref-height="4.2"
+                               preserve-aspect="true"/>
+                        <image src="#FullCircle64" id="environment1Color" pref-width="4.2" pref-height="4.2"
+                               preserve-aspect="true"/>
+                        <image src="#FullCircle64" id="environment0ColorBoost" pref-width="4.2" pref-height="4.2"
+                               preserve-aspect="true"/>
+                        <image src="#FullCircle64" id="environment1ColorBoost" pref-width="4.2" pref-height="4.2"
+                               preserve-aspect="true"/>
+                    </horizontal>
+                </horizontal>
+            </bg>
+
+        </custom-list>
+    </vertical>
+</bg>
