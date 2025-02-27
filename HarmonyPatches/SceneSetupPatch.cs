@@ -24,12 +24,12 @@ namespace Config_Share.HarmonyPatches
 
         // ReSharper disable once UnusedMember.Local
         [HarmonyPrefix]
-        private static void Prefix(ref ColorScheme playerOverrideColorScheme)
+        private static void Prefix(ref ColorScheme overrideColorScheme)
         {
             if (PluginConfig.Instance.Enabled)
             {
                 var scheme = Manager.Instance.GetCurrentScheme();
-                playerOverrideColorScheme = scheme.ToColorScheme();
+                overrideColorScheme  = scheme.ToColorScheme();
             }
         }
     }

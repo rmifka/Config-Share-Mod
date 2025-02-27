@@ -5,7 +5,7 @@
   "author": "Renschi",
   "version": "0.0.1",
   "description": "",
-  "gameVersion": "1.40.0",
+  "gameVersion": "1.39.1",
   "dependsOn": {
     "BSIPA": "^4.2.0"
   }
