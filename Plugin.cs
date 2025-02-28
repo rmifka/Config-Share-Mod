@@ -39,16 +39,25 @@ namespace Config_Share
         #endregion
 
         [OnStart]
-        // Resharper disable once UnusedMember.Global
+        // ReSharper disable once UnusedMember.Global
         public async Task OnApplicationStart()
         {
-            Logger.Debug("OnApplicationStart");
-            new GameObject("Config_ShareController").AddComponent<Config_ShareController>();
-            new GameObject("ConfigShareMainBehaviour").AddComponent<ColorFetcher>();
+            Logger.Info("OnApplicationStart - Loading Config Share first!");
+
+            _harmony.PatchAll(Assembly.GetExecutingAssembly()); 
+            GameObject controllerObject = new GameObject("Config_ShareController");
+            Object.DontDestroyOnLoad(controllerObject);
+            controllerObject.AddComponent<Config_ShareController>();
+
+            GameObject colorFetcherObject = new GameObject("ConfigShareMainBehaviour");
+            Object.DontDestroyOnLoad(colorFetcherObject);
+            colorFetcherObject.AddComponent<ColorFetcher>();
+
             await MainMenuAwaiter.WaitForMainMenuAsync();
+
             BSMLWrapper.EnableUI();
-            _harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
+
 
         [OnExit]
         // Resharper disable once UnusedMember.Global
