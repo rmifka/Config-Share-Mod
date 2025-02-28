@@ -40,7 +40,7 @@ namespace Config_Share
 
         [OnStart]
         // Resharper disable once UnusedMember.Global
-        public async Task OnApplicationStart()
+        public void OnApplicationStart()
         {
             Logger.Info("OnApplicationStart - Loading Config Share first!");
 
