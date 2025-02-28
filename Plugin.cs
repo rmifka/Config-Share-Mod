@@ -53,9 +53,7 @@ namespace Config_Share
             Object.DontDestroyOnLoad(colorFetcherObject);
             colorFetcherObject.AddComponent<ColorFetcher>();
 
-            await MainMenuAwaiter.WaitForMainMenuAsync();
-
-            BSMLWrapper.EnableUI();
+            MainMenuAwaiter.MainMenuInitializing += BSMLWrapper.EnableUI;
         }
 
         [OnExit]
