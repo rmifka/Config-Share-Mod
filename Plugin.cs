@@ -40,7 +40,7 @@ namespace Config_Share
 
         [OnStart]
         // ReSharper disable once UnusedMember.Global
-        public async Task OnApplicationStart()
+        public void OnApplicationStart()
         {
             Logger.Info("OnApplicationStart - Loading Config Share first!");
 
@@ -53,9 +53,7 @@ namespace Config_Share
             Object.DontDestroyOnLoad(colorFetcherObject);
             colorFetcherObject.AddComponent<ColorFetcher>();
 
-            await MainMenuAwaiter.WaitForMainMenuAsync();
-
-            BSMLWrapper.EnableUI();
+            MainMenuAwaiter.MainMenuInitializing += BSMLWrapper.EnableUI;
         }
 
 
