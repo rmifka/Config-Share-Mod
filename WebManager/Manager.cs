@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 public class Manager
 {
-    private static readonly string _baseUrl = "https://config-share.lambourne.at/api/";
+    private static readonly string _baseUrl = "https://config-share-api.lambourne.at/api/";
     private static readonly string _colorSchemesEndpoint = "colors";
 
     private Manager()
@@ -26,12 +26,40 @@ public class Manager
 
     public CustomColorScheme GetCurrentScheme()
     {
-        return CustomColorSchemes[PluginConfig.Instance.SelectedColorSchemeId];
+        var selectedId = PluginConfig.Instance.SelectedColorSchemeId;
+        if (!string.IsNullOrEmpty(selectedId) && CustomColorSchemes.TryGetValue(selectedId, out var scheme))
+        {
+            return scheme;
+        }
+
+        var fallback = CustomColorSchemes.Values.FirstOrDefault();
+        if (fallback != null && fallback.colorSchemeId != selectedId)
+        {
+            Plugin.Logger.Warn($"Selected color scheme '{selectedId}' missing, falling back to '{fallback.colorSchemeId}'.");
+            PluginConfig.Instance.SelectedColorSchemeId = fallback.colorSchemeId;
+        }
+        else if (fallback == null)
+        {
+            Plugin.Logger.Error("No custom color schemes available to select.");
+        }
+
+        return fallback;
     }
 
     public void SetCurrentScheme(string colorSchemeId)
     {
-        var colorScheme = CustomColorSchemes.FirstOrDefault(x => x.Key == colorSchemeId).Value;
+        if (string.IsNullOrEmpty(colorSchemeId))
+        {
+            Plugin.Logger.Warn("Attempted to set an empty color scheme id.");
+            return;
+        }
+
+        if (!CustomColorSchemes.TryGetValue(colorSchemeId, out var colorScheme))
+        {
+            Plugin.Logger.Warn($"Color scheme '{colorSchemeId}' not found, keeping current selection.");
+            return;
+        }
+
         PluginConfig.Instance.SelectedColorSchemeId = colorScheme.colorSchemeId;
     }
 
@@ -40,9 +68,32 @@ public class Manager
         CustomColorSchemes.Add(colorScheme.colorSchemeId, colorScheme);
     }
 
-    public IEnumerator RequestAllColorSchemes(Action<string> callback)
+    public IEnumerator RequestAllColorSchemes(
+        Action<string> callback,
+        string searchQuery = "",
+        string sortBy = "CreatedAt",
+        string sortDirection = "Desc",
+        int page = 1,
+        int pageSize = 15)
     {
-        var url = _baseUrl + _colorSchemesEndpoint;
+        var safePage = Math.Max(1, page);
+        var safePageSize = Math.Max(1, pageSize);
+        var queryParams = new List<string>
+        {
+            $"page={safePage}",
+            $"pageSize={safePageSize}"
+        };
+
+        if (!string.IsNullOrWhiteSpace(sortBy))
+            queryParams.Add($"sortBy={Uri.EscapeDataString(sortBy)}");
+
+        if (!string.IsNullOrWhiteSpace(sortDirection))
+            queryParams.Add($"sortDir={Uri.EscapeDataString(sortDirection)}");
+
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+            queryParams.Add($"search={Uri.EscapeDataString(searchQuery)}");
+
+        var url = _baseUrl + _colorSchemesEndpoint + "?" + string.Join("&", queryParams);
 
         using (var request = UnityWebRequest.Get(url))
         {

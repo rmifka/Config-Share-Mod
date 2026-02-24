@@ -1,15 +1,23 @@
-﻿<bg
->
-    <vertical vertical-fit="PreferredSize">
-        <text text="Color Scheme List" align="Center" font-size="4.5"/>
+﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
+    <vertical vertical-fit="PreferredSize" horizontal-fit="PreferredSize" pref-width="110" child-control-width="true" child-expand-width="true" child-align="UpperCenter">
         <bool-setting text="Enabled" value="enabled" apply-on-change="true"/>
-        <custom-list id="list" contents="scheme-list" visible-cells="7" expand-cell="true" pref-width="150"
-                     show-scrollbar="true" select-cell="on-scheme-selected" cell-size="10">
+        <horizontal spacing="2" horizontal-fit="Unconstrained" vertical-fit="PreferredSize" child-control-width="true" child-expand-width="true" child-alignment="MiddleCenter">
+            <string-setting text=" " value="search-query" apply-on-change="true" flexible-width="1"/>
+            <dropdown-list-setting text=" " choices="sort-options" value="sort-by" apply-on-change="true"/>
+            <dropdown-list-setting text=" " choices="sort-dirs" value="sort-dir" apply-on-change="true"/>
+            <button text="Search" on-click="on-search-click"/>
+        </horizontal>
+        <custom-list id="list" contents="scheme-list" visible-cells="7"
+                     show-scrollbar="true" select-cell="on-scheme-selected" cell-size="10" flexible-width="0">
 
-            <bg bg="round-rect-panel" pref-width="150" pref-height="10">
-                <horizontal vertical-fit='Unconstrained' horizontal-fit='Unconstrained' align="Center">
-                    <text id="scheme-text" text="~scheme-name" font-size="4.2" align="Center"/>
-                    <horizontal horizontal-fit="PreferredSize" pref-width="40" align="right">
+            <bg bg="round-rect-panel" horizontal-fit="Unconstrained" vertical-fit="Unconstrained">
+                <horizontal vertical-fit='Unconstrained' horizontal-fit='Unconstrained' child-control-width="true" pad="2" child-expand-width="true" child-align="MiddleCenter" spacing="2">
+                    <vertical horizontal-fit="Unconstrained" vertical-fit="PreferredSize" flexible-width="1" spacing="0">
+                        <text id="scheme-text" text="~scheme-name" font-size="4.2" align="Left"/>
+                        <text text="~scheme-description" font-size="3.2" color="#888888" align="Left"
+                              word-wrapping="false" overflow-mode="Truncate"/>
+                    </vertical>
+                    <horizontal horizontal-fit="PreferredSize" flexible-width="0" child-align="MiddleRight">
                         <image src="#FullCircle64" id="saberAColor" pref-width="4.2" pref-height="4.2"
                                preserve-aspect="true"/>
                         <image src="#FullCircle64" id="saberBColor" pref-width="4.2" pref-height="4.2"

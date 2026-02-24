@@ -10,7 +10,7 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>Config_Share</RootNamespace>
         <AssemblyName>Config-Share</AssemblyName>
-        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>portable</DebugType>
@@ -20,6 +20,7 @@
         <!--<PathMap>$(AppOutputBase)=X:\$(AssemblyName)\</PathMap>-->
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <Optimize>false</Optimize>
@@ -189,6 +190,7 @@
     </ItemGroup>
     <ItemGroup>
         <Content Include=".gitignore"/>
+        <Content Include="Schema.md" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>
