@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
+using BeatSaberMarkupLanguage.Util;
 using Config_Share.Configuration;
 using HarmonyLib;
 using IPA;
@@ -50,8 +52,8 @@ namespace Config_Share
             GameObject colorFetcherObject = new GameObject("ConfigShareMainBehaviour");
             Object.DontDestroyOnLoad(colorFetcherObject);
             colorFetcherObject.AddComponent<ColorFetcher>();
-            
-            BSMLWrapper.EnableUI();
+
+            MainMenuAwaiter.MainMenuInitializing += BSMLWrapper.EnableUI;
         }
 
         [OnExit]

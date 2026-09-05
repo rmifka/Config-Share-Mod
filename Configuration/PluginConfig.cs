@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿﻿using System.Runtime.CompilerServices;
 using IPA.Config.Stores;
 
 [assembly: InternalsVisibleTo(GeneratedStore.AssemblyVisibilityTarget)]
@@ -11,6 +11,10 @@ namespace Config_Share.Configuration
         public static PluginConfig Instance { get; set; }
         public virtual bool Enabled { get; set; }
         public virtual string SelectedColorSchemeId { get; set; } = "";
+        public virtual string SearchQuery { get; set; } = string.Empty;
+        public virtual string SortBy { get; set; } = "CreatedAt";
+        public virtual string SortDirection { get; set; } = "Desc";
+        public virtual int PageSize { get; set; } = 60;
 
         /// <summary>
         ///     This is called whenever BSIPA reads the config from disk (including when file changes are detected).

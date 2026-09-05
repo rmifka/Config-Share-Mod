@@ -1,4 +1,5 @@
-﻿using Config_Share;
+﻿using System;
+using Config_Share;
 using Config_Share.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -19,22 +20,35 @@ public class ColorFetcher : MonoBehaviour
         FetchColorSchemes();
     }
 
-    public void FetchColorSchemes()
+    public void FetchColorSchemes(
+        string searchQuery = null,
+        string sortBy = null,
+        string sortDirection = null,
+        int page = 1,
+        int? pageSize = null,
+        Action<bool> onCompleted = null)
     {
+        var config = PluginConfig.Instance;
+        var query = searchQuery ?? config.SearchQuery;
+        var sortField = string.IsNullOrWhiteSpace(sortBy) ? config.SortBy : sortBy;
+        var sortOrder = string.IsNullOrWhiteSpace(sortDirection) ? config.SortDirection : sortDirection;
+        var size = pageSize ?? (config.PageSize <= 0 ? 15 : config.PageSize);
+
         StartCoroutine(Manager.Instance.RequestAllColorSchemes(json =>
         {
-            Plugin.Logger.Info("Received color schemes.");
-            if (json != null)
+            var success = !string.IsNullOrEmpty(json);
+            if (success)
             {
+                Plugin.Logger.Info("Received color schemes.");
                 var colorWebResponse = JsonConvert.DeserializeObject<ColorWebResponse>(json);
 
                 Manager.Instance.CustomColorSchemes.Clear();
 
                 foreach (var colorScheme in colorWebResponse.items)
                 {
-                    if (string.IsNullOrEmpty(PluginConfig.Instance.SelectedColorSchemeId))
+                    if (string.IsNullOrEmpty(config.SelectedColorSchemeId))
                     {
-                        PluginConfig.Instance.SelectedColorSchemeId = colorScheme.colorSchemeId;
+                        config.SelectedColorSchemeId = colorScheme.colorSchemeId;
                     }
 
                     Manager.Instance.AddColorScheme(colorScheme);
@@ -44,6 +58,13 @@ public class ColorFetcher : MonoBehaviour
             {
                 Plugin.Logger.Debug("Failed to retrieve color schemes.");
             }
-        }));
+
+            onCompleted?.Invoke(success);
+        },
+            query,
+            sortField,
+            sortOrder,
+            page,
+            size));
     }
 }
