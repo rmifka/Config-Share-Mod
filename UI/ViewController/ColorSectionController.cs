@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿extern alias hmui;
+using System.Collections.Generic;
 using System.Linq;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
@@ -8,6 +9,12 @@ using Config_Share.Configuration;
 using HMUI;
 using TMPro;
 using UnityEngine;
+
+#if !V_1_29_1
+using ImageView = HMUI.ImageView;
+#else
+using ImageView = hmui::HMUI.ImageView;
+#endif
 
 [ViewDefinition("Config_Share.UI.Views.ColorSelection.bsml")]
 [HotReload(RelativePathToLayout = @"..\Views\ColorSelection.bsml")]
@@ -60,7 +67,7 @@ internal class ColorSectionController : BSMLAutomaticViewController
 
     [UIAction("on-scheme-selected")]
     // ReSharper disable once UnusedMember.Local
-    private void OnSchemeSelected(TableView tb, object row)
+    private void OnSchemeSelected(hmui::HMUI.TableView tb, object row)
     {
         if (row is not ColorListItem selected)
         {
@@ -151,8 +158,14 @@ internal class ColorSectionController : BSMLAutomaticViewController
                         x.Value.colorSchemeName,
                         x.Value.colorSchemeDescription,
                         x.Value.GetColors())));
+#if V_1_29_1
+        presetListDisplay.data = colorList.Cast<object>().ToList();
+        presetListDisplay.tableView.ReloadData();
+        #else
         presetListDisplay.Data = colorList.Cast<object>().ToList();
         presetListDisplay.TableView.ReloadData();
+#endif
+
     }
 }
 

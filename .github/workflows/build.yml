@@ -1,0 +1,61 @@
+name: Build Saber Factory
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      max-parallel: 2 # Sadly have to set this to either 1 or 2 because else github rate limits when downloading the Heck dependency
+      matrix: # Currently pinning to this version because 1.42.1 isn't available yet, but shouldn't really break, because its just a minor version release
+        include:
+          - bs-define: V_1_42_0
+            game-version: 1.42.0
+            additional-deps: '{"SiraUtil":"^3.1.14", "BeatSaberMarkupLanguage":"^1.12.4"}'
+          - bs-define: V_1_29_1
+            game-version: 1.29.1
+            additional-deps: '{"SiraUtil":"^3.1.2", "BeatSaberMarkupLanguage":"^1.6.10"}'
+    
+    env:
+      BEAT_SABER_VERSION: ${{ matrix.game-version }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Initialize modding environment
+        uses: beat-forge/init-beatsaber@v1
+        with:
+          version: ${{ matrix.game-version }}
+      - name: Download Beatmods dependencies
+        uses: Aeroluna/download-beatmods-deps@main
+        with:
+          project-path: 'Config-Share.csproj'
+          path: './Refs'
+          additional-sources: ''
+          game-version: ${{ matrix.game-version }}
+          additional-dependencies: ${{ matrix.additional-deps }}
+      - name: Build
+        id: Build
+        env:
+          FrameworkPathOverride: /usr/lib/mono/4.7.2-api
+        run: dotnet build --configuration Release -p:BS_DEFINE=${{ matrix.bs-define }}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Config-Share-bs${{ matrix.game-version }}-${{ github.sha }}
+          path: ./bin/Release/Artifact

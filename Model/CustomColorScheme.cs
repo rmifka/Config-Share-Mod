@@ -15,14 +15,11 @@ public class ColorWebResponse
 [Serializable]
 public class CustomColorScheme
 {
-    [JsonProperty("id")]
-    public string colorSchemeId;
-    
-    [JsonProperty("name")]
-    public string colorSchemeName;
-    
-    [JsonProperty("description")]
-    public string colorSchemeDescription;
+    [JsonProperty("id")] public string colorSchemeId;
+
+    [JsonProperty("name")] public string colorSchemeName;
+
+    [JsonProperty("description")] public string colorSchemeDescription;
     public DateTime createdAt;
     public Color saberAColor;
     public Color saberBColor;
@@ -46,12 +43,23 @@ public class CustomColorScheme
         };
     }
 
+
+#if V_1_29_1
     public ColorScheme ToColorScheme()
     {
+        return new ColorScheme("ConfigShare", "ConfigShare", true, "ConfigShare", false, saberAColor,
+            saberBColor, environmentColor0, environmentColor1, true, environmentColor0Boost,
+            environmentColor1Boost, obstaclesColor);
+    }
+#else
+    public ColorScheme ToColorScheme()
+    {
+        
         return new ColorScheme("ConfigShare", "ConfigShare",
             true, "ConfigShare", false, true,
             saberAColor, saberBColor, true, environmentColor0, environmentColor1,
             Color.clear, true,
             environmentColor0Boost, environmentColor1Boost, Color.clear, obstaclesColor);
     }
+#endif
 }

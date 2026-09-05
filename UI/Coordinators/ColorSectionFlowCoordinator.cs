@@ -1,10 +1,21 @@
-﻿using BeatSaberMarkupLanguage;
+﻿extern alias hmui;
+
+using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
-using BeatSaberMarkupLanguage.Util;
 using HMUI;
 using Plugin = Config_Share.Plugin;
 
-public class ColorSectionFlowCoordinator : FlowCoordinator
+#if !V_1_29_1
+using BeatSaberMarkupLanguage.Util;
+#endif
+
+public class ColorSectionFlowCoordinator : 
+#if !V_1_29_1
+    FlowCoordinator
+    #else
+    hmui::HMUI.FlowCoordinator
+
+#endif
 {
     private static ColorSectionFlowCoordinator flow;
 
@@ -25,7 +36,14 @@ public class ColorSectionFlowCoordinator : FlowCoordinator
         }
     }
 
-    protected override void BackButtonWasPressed(ViewController _)
+    protected override void BackButtonWasPressed(
+#if !V_1_29_1
+        ViewController
+#else
+        hmui::HMUI.ViewController
+#endif
+        _
+        )
     {
         BeatSaberUI.MainFlowCoordinator.DismissFlowCoordinator(this);
     }
@@ -49,13 +67,25 @@ public class ColorSectionFlowCoordinator : FlowCoordinator
                     flow.ShowFlow();
                 });
 
+#if V_1_29_1
+        MenuButtons.instance.RegisterButton(button);
+        #else
         MenuButtons.Instance.RegisterButton(button);
+        
+#endif
         Plugin.Logger.Info("Initialized Flow Coordinator");
     }
 
     public static void Deinit()
     {
-        if (button != null) MenuButtons.Instance.UnregisterButton(button);
-        ;
+        if (button != null)
+        {
+#if V_1_29_1
+            MenuButtons.instance.UnregisterButton(button);
+#else
+        MenuButtons.Instance.UnregisterButton(button);
+        
+#endif
+        }
     }
 }

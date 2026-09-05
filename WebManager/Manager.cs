@@ -16,10 +16,9 @@ public class Manager
         Instance = this;
     }
 
-    public static Manager Instance { get; private set; } = new Manager();
+    public static Manager Instance { get; private set; } = new();
 
-    public Dictionary<string, CustomColorScheme> CustomColorSchemes { get; } =
-        new Dictionary<string, CustomColorScheme>();
+    public Dictionary<string, CustomColorScheme> CustomColorSchemes { get; } = new();
 
 
     public CustomColorScheme CurrentScheme => GetCurrentScheme();
@@ -35,7 +34,8 @@ public class Manager
         var fallback = CustomColorSchemes.Values.FirstOrDefault();
         if (fallback != null && fallback.colorSchemeId != selectedId)
         {
-            Plugin.Logger.Warn($"Selected color scheme '{selectedId}' missing, falling back to '{fallback.colorSchemeId}'.");
+            Plugin.Logger.Warn(
+                $"Selected color scheme '{selectedId}' missing, falling back to '{fallback.colorSchemeId}'.");
             PluginConfig.Instance.SelectedColorSchemeId = fallback.colorSchemeId;
         }
         else if (fallback == null)
@@ -99,6 +99,7 @@ public class Manager
         {
             yield return request.SendWebRequest();
 
+#if !V_1_29_1
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
@@ -110,6 +111,18 @@ public class Manager
                 var json = request.downloadHandler.text;
                 callback?.Invoke(json);
             }
+#else
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Plugin.Logger.Error(request.error);
+                callback?.Invoke(null);
+            }
+            else
+            {
+                var json = request.downloadHandler.text;
+                callback?.Invoke(json);
+            }
+#endif
         }
     }
 }

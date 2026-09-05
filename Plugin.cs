@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
-using BeatSaberMarkupLanguage.Util;
 using Config_Share.Configuration;
 using HarmonyLib;
 using IPA;
@@ -9,12 +8,17 @@ using UnityEngine;
 using Config = IPA.Config.Config;
 using IPALogger = IPA.Logging.Logger;
 
+#if !V_1_29_1
+using BeatSaberMarkupLanguage.Util;
+#endif
+
+
 namespace Config_Share
 {
     [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin
     {
-        private readonly Harmony _harmony = new Harmony("com.renschi.configshare");
+        private readonly Harmony _harmony = new("com.renschi.configshare");
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Logger { get; private set; }
 
@@ -53,7 +57,12 @@ namespace Config_Share
             Object.DontDestroyOnLoad(colorFetcherObject);
             colorFetcherObject.AddComponent<ColorFetcher>();
 
+#if !V_1_29_1
+
             MainMenuAwaiter.MainMenuInitializing += BSMLWrapper.EnableUI;
+#else
+            BSMLWrapper.EnableUI();
+#endif
         }
 
         [OnExit]

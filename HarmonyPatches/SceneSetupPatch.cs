@@ -6,9 +6,6 @@ using Config_Share.Configuration;
 using HarmonyLib;
 using UnityEngine;
 
-/// <summary>
-/// See https://github.com/pardeike/Harmony/wiki for a full reference on Harmony.
-/// </summary>
 namespace Config_Share.HarmonyPatches
 {
     [HarmonyPatch]
@@ -24,12 +21,24 @@ namespace Config_Share.HarmonyPatches
 
         // ReSharper disable once UnusedMember.Local
         [HarmonyPrefix]
-        private static void Prefix(ref ColorScheme playerOverrideColorScheme)
+        private static void Prefix(ref ColorScheme
+#if !V_1_29_1
+            playerOverrideColorScheme
+#else
+                overrideColorScheme
+            #endif
+        )
         {
             if (PluginConfig.Instance.Enabled)
             {
                 var scheme = Manager.Instance.GetCurrentScheme();
-                playerOverrideColorScheme = scheme.ToColorScheme();
+#if !V_1_29_1
+            playerOverrideColorScheme
+#else
+                overrideColorScheme
+#endif
+                    
+                    = scheme.ToColorScheme();
             }
         }
     }
