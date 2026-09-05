@@ -5,6 +5,7 @@ using BeatSaberMarkupLanguage.Components;
 using BeatSaberMarkupLanguage.ViewControllers;
 using Config_Share;
 using Config_Share.Configuration;
+using Config_Share.MonoBehaviours;
 using HMUI;
 using TMPro;
 using UnityEngine;
@@ -80,6 +81,12 @@ internal class ColorSectionController : BSMLAutomaticViewController
         {
             selected.schemeText.color = Color.grey;
         }
+        
+        var colors = Manager.Instance.CurrentScheme?.GetColors().ToList();
+        if (colors is { Count: >= 2 })
+        {
+            ColorPreviewCubes.Instance.SetColors(colors[0], colors[1]);
+        }
     }
 
 
@@ -93,6 +100,7 @@ internal class ColorSectionController : BSMLAutomaticViewController
     [UIAction("#post-parse")]
     public void UpdatePresetList()
     {
+        
         if (Manager.Instance.CustomColorSchemes.Count == 0)
         {
             TriggerSearch();
@@ -100,6 +108,8 @@ internal class ColorSectionController : BSMLAutomaticViewController
         }
 
         SetColorList();
+
+        //ColorPreviewCubes.Instance.parent.transform.SetParent(transform,worldPositionStays:false);
     }
 
     private void TriggerSearch()
@@ -158,7 +168,6 @@ internal class ColorSectionController : BSMLAutomaticViewController
         presetListDisplay.Data = colorList.Cast<object>().ToList();
         presetListDisplay.TableView.ReloadData();
 #endif
-
     }
 }
 
@@ -213,7 +222,15 @@ internal class ColorListItem
         environment1ColorBoost.color = colorList[6];
 
         var currentScheme = Manager.Instance.CurrentScheme;
-        if (currentScheme != null && index == currentScheme.colorSchemeId) schemeText.color = Color.green;
+        if (currentScheme != null && index == currentScheme.colorSchemeId)
+        {
+            schemeText.color = Color.green;
+            var c = currentScheme.GetColors().ToList();
+            if (c is { Count: >= 2 })
+            {
+                ColorPreviewCubes.Instance.SetColors(c[0], c[1]);
+            }
+        }
     }
 
     private void DeSelect()

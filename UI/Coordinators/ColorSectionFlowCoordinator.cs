@@ -1,5 +1,6 @@
 ﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
+using Config_Share.MonoBehaviours;
 using HMUI;
 using Plugin = Config_Share.Plugin;
 
@@ -44,6 +45,7 @@ public class ColorSectionFlowCoordinator :
         )
     {
         BeatSaberUI.MainFlowCoordinator.DismissFlowCoordinator(this);
+        ColorPreviewCubes.Instance.SetActive(false);
     }
 
     public void ShowFlow()
@@ -63,6 +65,7 @@ public class ColorSectionFlowCoordinator :
                             BeatSaberUI.CreateFlowCoordinator<ColorSectionFlowCoordinator>();
 
                     flow.ShowFlow();
+                    ColorPreviewCubes.Instance.SetActive(true);
                 });
 
 #if V_1_29_1

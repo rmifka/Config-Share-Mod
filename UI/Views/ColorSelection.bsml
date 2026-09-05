@@ -1,4 +1,4 @@
-﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
+﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
     <vertical vertical-fit="PreferredSize" horizontal-fit="PreferredSize" pref-width="110" child-control-width="true" child-expand-width="true" child-align="UpperCenter">
         <bool-setting text="Enabled" value="enabled" apply-on-change="true"/>
         <horizontal spacing="2" horizontal-fit="Unconstrained" vertical-fit="PreferredSize" child-control-width="true" child-expand-width="true" child-alignment="MiddleCenter">

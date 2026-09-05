@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Threading.Tasks;
 using Config_Share.Configuration;
+using Config_Share.MonoBehaviours;
 using HarmonyLib;
 using IPA;
 using IPA.Config.Stores;
