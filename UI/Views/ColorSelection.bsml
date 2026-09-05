@@ -1,5 +1,5 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://monkeymanboy.github.io/BSML-Docs/BSMLSchema.xsd'>
-    <vertical vertical-fit="PreferredSize" horizontal-fit="PreferredSize" pref-width="110" child-control-width="true" child-expand-width="true" child-align="UpperCenter">
+    <vertical vertical-fit="PreferredSize" horizontal-fit="PreferredSize" pref-height="80" pref-width="110" child-control-width="true" child-expand-width="true" child-align="UpperCenter">
         <bool-setting text="Enabled" value="enabled" apply-on-change="true"/>
         <horizontal spacing="2" horizontal-fit="Unconstrained" vertical-fit="PreferredSize" child-control-width="true" child-expand-width="true" child-alignment="MiddleCenter">
             <string-setting text=" " value="search-query" apply-on-change="true" flexible-width="1"/>
@@ -7,7 +7,7 @@
             <dropdown-list-setting text=" " choices="sort-dirs" value="sort-dir" apply-on-change="true"/>
             <button text="Search" on-click="on-search-click"/>
         </horizontal>
-        <custom-list id="list" contents="scheme-list" visible-cells="7"
+        <custom-list id="list" contents="scheme-list" visible-cells="5"
                      show-scrollbar="true" select-cell="on-scheme-selected" cell-size="10" flexible-width="0">
 
             <bg bg="round-rect-panel" horizontal-fit="Unconstrained" vertical-fit="Unconstrained">
@@ -37,5 +37,11 @@
             </bg>
 
         </custom-list>
+
+        <horizontal spacing="2" horizontal-fit="Unconstrained" vertical-fit="PreferredSize" child-control-width="true" child-align="MiddleCenter">
+            <button text="◀" on-click="on-prev-page" interactable="~has-prev-page"/>
+            <text id="page-text" text="~page-text" font-size="3.5" align="Center"/>
+            <button text="▶" on-click="on-next-page" interactable="~has-next-page"/>
+        </horizontal>
     </vertical>
 </bg>

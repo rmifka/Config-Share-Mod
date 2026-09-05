@@ -43,6 +43,7 @@ public class ColorFetcher : MonoBehaviour
                 var colorWebResponse = JsonConvert.DeserializeObject<ColorWebResponse>(json);
 
                 Manager.Instance.CustomColorSchemes.Clear();
+                Manager.Instance.LastTotalCount = colorWebResponse.total;
 
                 foreach (var colorScheme in colorWebResponse.items)
                 {

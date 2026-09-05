@@ -16,6 +16,9 @@ internal class ColorSectionController : BSMLAutomaticViewController
 {
     [UIComponent("list")] public CustomCellListTableData presetListDisplay;
 
+    private int _currentPage = 1;
+    private int _totalPages = 1;
+
     // ReSharper disable once UnusedMember.Local
     [UIValue("scheme-list")] private List<object> SchemeList => []; // Empty List
 
@@ -59,6 +62,18 @@ internal class ColorSectionController : BSMLAutomaticViewController
         set => PluginConfig.Instance.SortDirection = NormalizeSortDir(value);
     }
 
+    [UIValue("page-text")]
+    // ReSharper disable once UnusedMember.Local
+    private string PageText => $"Page {_currentPage} / {_totalPages}";
+
+    [UIValue("has-prev-page")]
+    // ReSharper disable once UnusedMember.Local
+    private bool HasPrevPage => _currentPage > 1;
+
+    [UIValue("has-next-page")]
+    // ReSharper disable once UnusedMember.Local
+    private bool HasNextPage => _currentPage < _totalPages;
+
     [UIAction("on-scheme-selected")]
     // ReSharper disable once UnusedMember.Local
     private void OnSchemeSelected(TableView tb, object row)
@@ -81,7 +96,7 @@ internal class ColorSectionController : BSMLAutomaticViewController
         {
             selected.schemeText.color = Color.grey;
         }
-        
+
         var colors = Manager.Instance.CurrentScheme?.GetColors().ToList();
         if (colors is { Count: >= 2 })
         {
@@ -89,18 +104,35 @@ internal class ColorSectionController : BSMLAutomaticViewController
         }
     }
 
-
     [UIAction("on-search-click")]
     // ReSharper disable once UnusedMember.Local
     private void OnSearchClick()
     {
+        _currentPage = 1;
+        TriggerSearch();
+    }
+
+    [UIAction("on-prev-page")]
+    // ReSharper disable once UnusedMember.Local
+    private void OnPrevPage()
+    {
+        if (_currentPage <= 1) return;
+        _currentPage--;
+        TriggerSearch();
+    }
+
+    [UIAction("on-next-page")]
+    // ReSharper disable once UnusedMember.Local
+    private void OnNextPage()
+    {
+        if (_currentPage >= _totalPages) return;
+        _currentPage++;
         TriggerSearch();
     }
 
     [UIAction("#post-parse")]
     public void UpdatePresetList()
     {
-        
         if (Manager.Instance.CustomColorSchemes.Count == 0)
         {
             TriggerSearch();
@@ -109,7 +141,7 @@ internal class ColorSectionController : BSMLAutomaticViewController
 
         SetColorList();
 
-        //ColorPreviewCubes.Instance.parent.transform.SetParent(transform,worldPositionStays:false);
+        UpdatePaginationState();
     }
 
     private void TriggerSearch()
@@ -124,15 +156,30 @@ internal class ColorSectionController : BSMLAutomaticViewController
             PluginConfig.Instance.SearchQuery,
             PluginConfig.Instance.SortBy,
             PluginConfig.Instance.SortDirection,
-            1,
+            _currentPage,
             PluginConfig.Instance.PageSize,
             success =>
             {
                 if (success)
                 {
-                    SetColorList();
+                    SetColorList(); // ts does not work, but it works because of another bug so I guess we ball?
                 }
             });
+    }
+
+    private void UpdatePaginationState()
+    {
+        var total = Manager.Instance.LastTotalCount;
+        var pageSize = PluginConfig.Instance.PageSize;
+        _totalPages = pageSize > 0 ? Mathf.Max(1, Mathf.CeilToInt((float)total / pageSize)) : 1;
+
+        if (_currentPage > _totalPages) _currentPage = _totalPages;
+        
+
+
+        NotifyPropertyChanged(nameof(PageText));
+        NotifyPropertyChanged(nameof(HasPrevPage));
+        NotifyPropertyChanged(nameof(HasNextPage));
     }
 
     private static string NormalizeSortBy(string value)

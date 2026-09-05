@@ -22,6 +22,7 @@ public class Manager
 
 
     public CustomColorScheme CurrentScheme => GetCurrentScheme();
+    public int LastTotalCount { get; set; }
 
     public CustomColorScheme GetCurrentScheme()
     {
