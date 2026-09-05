@@ -46,7 +46,6 @@ jobs:
         with:
           project-path: 'Config-Share.csproj'
           path: './Refs'
-          additional-sources: ''
           game-version: ${{ matrix.game-version }}
           additional-dependencies: ${{ matrix.additional-deps }}
       - name: Build
