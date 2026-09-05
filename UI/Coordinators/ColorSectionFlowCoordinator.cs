@@ -1,6 +1,4 @@
-﻿extern alias hmui;
-
-using BeatSaberMarkupLanguage;
+﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
 using HMUI;
 using Plugin = Config_Share.Plugin;
@@ -13,7 +11,7 @@ public class ColorSectionFlowCoordinator :
 #if !V_1_29_1
     FlowCoordinator
     #else
-    hmui::HMUI.FlowCoordinator
+    FlowCoordinator
 
 #endif
 {
@@ -40,7 +38,7 @@ public class ColorSectionFlowCoordinator :
 #if !V_1_29_1
         ViewController
 #else
-        hmui::HMUI.ViewController
+        ViewController
 #endif
         _
         )
